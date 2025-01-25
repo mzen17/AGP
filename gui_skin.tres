@@ -1,0 +1,7 @@
+[gd_resource type="Theme" format=3 uid="uid://brccmm04pqd3g"]
+
+[resource]
+Button/font_sizes/font_size = 28
+TextEdit/font_sizes/font_size = 12
+default/colors/bg = Color(7.364e-06, 0.778717, 0, 1)
+default/fonts/txt = null

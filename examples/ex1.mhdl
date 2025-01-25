@@ -1,0 +1,27 @@
+START POINTS
+    var joint ARM.L;
+    var joint ARM.R;
+    var joint FOOT.L;
+    var joint FOOT.R;
+    var joint HEAD;
+
+    var anker NECK;
+    var anker WAIST;
+    var anker HIP.L;
+    var anker HIP.R;
+END POINTS
+
+DEFINE LIFTFOOT []
+    RFUNC PRINTLN ["HELLOOOOOO MF"];
+    RFUNC PRINTLN ["HELLOOOO MF", ["Bob", "sob", "Knob"]];
+    RFUNC PRINTLN ["HELLOOOOOO MF"];
+    RFUNC PRINTLN ["HELLOOOOOO MF"];
+    RFUNC PRINTLN ["HELLOOOOOO MF"];
+    RFUNC PRINTLN ["HELLOOOOOO MF"];
+END LIFTFOOT
+
+DEFINE MAIN []
+    RFUNC PRINTLN ["HELLOOOOOO MF"];
+    LFUNC LIFTFOOT [];
+    LFUNC LIFTFOOT [];
+END MAIN
