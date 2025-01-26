@@ -96,33 +96,55 @@ parameters/conditions/is_walking = false
 [node name="UI" type="CanvasLayer" parent="."]
 script = ExtResource("4_qs4b8")
 
-[node name="CodeEdit" type="CodeEdit" parent="UI"]
-offset_left = 256.0
-offset_top = 583.0
-offset_right = 718.0
-offset_bottom = 622.0
-
-[node name="Button" type="Button" parent="UI"]
+[node name="Submit" type="Button" parent="UI"]
 offset_left = 730.0
 offset_top = 584.0
 offset_right = 781.0
 offset_bottom = 621.0
 text = " >"
 
+[node name="ActionInput" type="TextEdit" parent="UI"]
+offset_left = 254.0
+offset_top = 586.0
+offset_right = 714.0
+offset_bottom = 623.0
+
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.291353, -0.169155, -0.941541, 0, -0.984242, 0.176827, -0.956616, -0.0515192, -0.286762, -15.5914, 44.6567, 4.86697)
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(-0.999983, 0, 0.005777, 0, 1, 0, -0.005777, 0, -0.999983, 5.79956, 23.3176, -48.1821)
+transform = Transform3D(-0.999983, -0.00577298, -0.000215621, 4.65661e-10, -0.0373241, 0.999303, -0.005777, 0.999287, 0.0373235, 2.6333, 169.484, -24.7301)
 
 [node name="Beacon" type="RigidBody3D" parent="."]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -2.72716, 34.8193, 45.7306)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 35.8469, 34.8193, 22.8995)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Beacon"]
 transform = Transform3D(1, 0, 0, 0, 1, -8.35187e-23, 0, 7.10543e-15, 1, 0, 0, 0)
 shape = SubResource("BoxShape3D_nfmgv")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="Beacon"]
+transform = Transform3D(5.995, 0, 0, 0, 7.23528, -3.11052e-21, 0, -6.04281e-22, 37.2434, 0, 0, 0.09)
+size = Vector3(1, 7.93798, 0.762756)
+
+[node name="Rock" type="RigidBody3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 75.1692, 34.8193, -60.1191)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Rock"]
+transform = Transform3D(1, 0, 0, 0, 1, -8.35187e-23, 0, 7.10543e-15, 1, 0, 0, 0)
+shape = SubResource("BoxShape3D_nfmgv")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Rock"]
+transform = Transform3D(5.995, 0, 0, 0, 7.23528, -3.11052e-21, 0, -6.04281e-22, 37.2434, 0, 0, 0.09)
+size = Vector3(1, 7.93798, 0.762756)
+
+[node name="Tripod" type="RigidBody3D" parent="."]
+transform = Transform3D(-0.659188, 0, 0.751978, 0, 1, 0, -0.751978, 0, -0.659188, -27.6551, 34.8193, -30.8343)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Tripod"]
+transform = Transform3D(1, 0, 0, 0, 1, -8.35187e-23, 0, 7.10543e-15, 1, 0, 0, 0)
+shape = SubResource("BoxShape3D_nfmgv")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Tripod"]
 transform = Transform3D(5.995, 0, 0, 0, 7.23528, -3.11052e-21, 0, -6.04281e-22, 37.2434, 0, 0, 0.09)
 size = Vector3(1, 7.93798, 0.762756)
 

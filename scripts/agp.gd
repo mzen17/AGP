@@ -13,6 +13,10 @@ func _on_button_pressed():
 func _ready() -> void:
 	$UI.append_action_to_button(_on_button_pressed)
 
+func _input(event):
+	if Input.is_key_pressed(KEY_ENTER):
+		get_viewport().set_input_as_handled()
+		_on_button_pressed()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
