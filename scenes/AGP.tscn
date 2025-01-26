@@ -1,7 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://cn7ng88ogpntd"]
+[gd_scene load_steps=14 format=3 uid="uid://cn7ng88ogpntd"]
 
-[ext_resource type="Script" path="res://scripts/AGP_CHAR.gd" id="1_3ifwr"]
+[ext_resource type="Script" path="res://scripts/energy.gd" id="1_3ifwr"]
+[ext_resource type="Script" path="res://scripts/agp.gd" id="1_p7e6j"]
 [ext_resource type="PackedScene" uid="uid://10js28gendkp" path="res://models/EnergyChan.glb" id="2_dp0oa"]
+[ext_resource type="Script" path="res://ui.gd" id="4_qs4b8"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_5a0de"]
 radius = 4.36069
@@ -35,19 +37,22 @@ states/walking/position = Vector2(589, 49)
 transitions = ["idle", "walking", SubResource("AnimationNodeStateMachineTransition_j5e1w"), "walking", "idle", SubResource("AnimationNodeStateMachineTransition_ucb84"), "Start", "idle", SubResource("AnimationNodeStateMachineTransition_0arht")]
 graph_offset = Vector2(251, -4)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_nfmgv"]
+size = Vector3(5.93445, 56.9483, 28.647)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_8xjw3"]
+size = Vector3(188.785, 1, 175.369)
+
 [node name="AGP" type="Node3D"]
+script = ExtResource("1_p7e6j")
 
-[node name="CSGBox3D" type="CSGBox3D" parent="."]
-transform = Transform3D(188.578, 0, 0, 0, 1, 0, 0, 0, 175.816, 0, 0, 0)
-
-[node name="CharacterBody3D" type="CharacterBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.97999, 1.12226, 0.174719)
+[node name="Energy" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.122, 0)
 script = ExtResource("1_3ifwr")
 
-[node name="EnergyChan" parent="CharacterBody3D" instance=ExtResource("2_dp0oa")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.477614, 0.38807, 0.402811)
+[node name="model" parent="Energy" instance=ExtResource("2_dp0oa")]
 
-[node name="Skeleton3D" parent="CharacterBody3D/EnergyChan/root" index="0"]
+[node name="Skeleton3D" parent="Energy/model/root" index="0"]
 bones/1/rotation = Quaternion(-3.7749e-08, -3.6637e-06, 2.91846e-13, 1)
 bones/2/rotation = Quaternion(0.568302, 0.0243455, 0.822111, 0.0239536)
 bones/3/rotation = Quaternion(5.0653e-08, -3.76957e-08, 0.0521553, 0.998639)
@@ -74,19 +79,35 @@ bones/28/rotation = Quaternion(0.0430696, -0.469316, -0.0432502, 0.880918)
 bones/29/rotation = Quaternion(2.00729e-08, -0.469258, 5.21861e-10, 0.883061)
 bones/30/rotation = Quaternion(-6.85362e-08, -0.205447, -3.20622e-07, 0.978668)
 
-[node name="AnimationPlayer" parent="CharacterBody3D/EnergyChan" index="1"]
+[node name="AnimationPlayer" parent="Energy/model" index="1"]
 active = false
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.392644, 10.0592, 1.58985)
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Energy"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10.059, 0)
 shape = SubResource("CapsuleShape3D_5a0de")
 
-[node name="AnimationTree" type="AnimationTree" parent="CharacterBody3D"]
-root_node = NodePath("../EnergyChan")
+[node name="AnimationTree" type="AnimationTree" parent="Energy"]
+root_node = NodePath("../model")
 tree_root = SubResource("AnimationNodeStateMachine_jrldy")
-anim_player = NodePath("../EnergyChan/AnimationPlayer")
+anim_player = NodePath("../model/AnimationPlayer")
 parameters/conditions/idle = false
 parameters/conditions/is_walking = false
+
+[node name="UI" type="CanvasLayer" parent="."]
+script = ExtResource("4_qs4b8")
+
+[node name="CodeEdit" type="CodeEdit" parent="UI"]
+offset_left = 256.0
+offset_top = 583.0
+offset_right = 718.0
+offset_bottom = 622.0
+
+[node name="Button" type="Button" parent="UI"]
+offset_left = 730.0
+offset_top = 584.0
+offset_right = 781.0
+offset_bottom = 621.0
+text = " >"
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.291353, -0.169155, -0.941541, 0, -0.984242, 0.176827, -0.956616, -0.0515192, -0.286762, -15.5914, 44.6567, 4.86697)
@@ -94,4 +115,24 @@ transform = Transform3D(0.291353, -0.169155, -0.941541, 0, -0.984242, 0.176827, 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(-0.999983, 0, 0.005777, 0, 1, 0, -0.005777, 0, -0.999983, 5.79956, 23.3176, -48.1821)
 
-[editable path="CharacterBody3D/EnergyChan"]
+[node name="Beacon" type="RigidBody3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -2.72716, 34.8193, 45.7306)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Beacon"]
+transform = Transform3D(1, 0, 0, 0, 1, -8.35187e-23, 0, 7.10543e-15, 1, 0, 0, 0)
+shape = SubResource("BoxShape3D_nfmgv")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Beacon"]
+transform = Transform3D(5.995, 0, 0, 0, 7.23528, -3.11052e-21, 0, -6.04281e-22, 37.2434, 0, 0, 0.09)
+size = Vector3(1, 7.93798, 0.762756)
+
+[node name="Floor" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
+transform = Transform3D(1, 0, -8.35187e-23, 0, 1, 0, -8.35187e-23, 0, 1, 1.90346, 0, -0.115891)
+shape = SubResource("BoxShape3D_8xjw3")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Floor"]
+transform = Transform3D(188.578, 0, -1.46839e-20, 0, 1, 0, -1.57498e-20, 0, 175.816, 0, 0, 0)
+
+[editable path="Energy/model"]
