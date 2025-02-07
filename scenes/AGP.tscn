@@ -1,9 +1,10 @@
-[gd_scene load_steps=14 format=3 uid="uid://cn7ng88ogpntd"]
+[gd_scene load_steps=26 format=3 uid="uid://cn7ng88ogpntd"]
 
 [ext_resource type="Script" path="res://scripts/energy.gd" id="1_3ifwr"]
 [ext_resource type="Script" path="res://scripts/agp.gd" id="1_p7e6j"]
 [ext_resource type="PackedScene" uid="uid://10js28gendkp" path="res://models/EnergyChan.glb" id="2_dp0oa"]
 [ext_resource type="Script" path="res://ui.gd" id="4_qs4b8"]
+[ext_resource type="PackedScene" uid="uid://d1ynwryrhgfbd" path="res://models/chair.glb" id="5_sqqo0"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_5a0de"]
 radius = 4.36069
@@ -12,36 +13,80 @@ height = 22.3139
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_dur7r"]
 animation = &"idle"
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_bda07"]
-animation = &"walking"
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ktxuh"]
+animation = &"kneel"
 
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_j5e1w"]
-advance_mode = 2
-advance_condition = &"is_walking"
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_0f25a"]
+animation = &"kneel_reset"
 
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ucb84"]
-xfade_time = 0.3
-advance_mode = 2
-advance_condition = &"idle"
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_6i6af"]
+animation = &"sitdown"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_nm1i5"]
+animation = &"situp_reset"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_2cdsc"]
+animation = &"wlk"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_0arht"]
 advance_mode = 2
 
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_o5wht"]
+advance_mode = 2
+advance_condition = &"kneel_on"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ep0du"]
+advance_mode = 2
+advance_condition = &"reset"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_au7ji"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_5yxt2"]
+advance_mode = 2
+advance_condition = &"sit_on"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_mur8r"]
+advance_mode = 2
+advance_condition = &"reset"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_nesm3"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_lbbxu"]
+advance_mode = 2
+advance_condition = &"is_walking"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_l2nl3"]
+advance_mode = 2
+advance_condition = &"idle"
+
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_jrldy"]
-states/End/position = Vector2(873, 96)
+states/End/position = Vector2(1007, 59)
 states/Start/position = Vector2(400, 172)
 states/idle/node = SubResource("AnimationNodeAnimation_dur7r")
 states/idle/position = Vector2(606, 177)
-states/walking/node = SubResource("AnimationNodeAnimation_bda07")
-states/walking/position = Vector2(589, 49)
-transitions = ["idle", "walking", SubResource("AnimationNodeStateMachineTransition_j5e1w"), "walking", "idle", SubResource("AnimationNodeStateMachineTransition_ucb84"), "Start", "idle", SubResource("AnimationNodeStateMachineTransition_0arht")]
-graph_offset = Vector2(251, -4)
+states/kneel/node = SubResource("AnimationNodeAnimation_ktxuh")
+states/kneel/position = Vector2(535, 293)
+states/kneel_reset/node = SubResource("AnimationNodeAnimation_0f25a")
+states/kneel_reset/position = Vector2(733, 293)
+states/sitdown/node = SubResource("AnimationNodeAnimation_6i6af")
+states/sitdown/position = Vector2(790, 110)
+states/situp_reset/node = SubResource("AnimationNodeAnimation_nm1i5")
+states/situp_reset/position = Vector2(829, 215)
+states/wlk/node = SubResource("AnimationNodeAnimation_2cdsc")
+states/wlk/position = Vector2(570, 38)
+transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_0arht"), "idle", "kneel", SubResource("AnimationNodeStateMachineTransition_o5wht"), "kneel", "kneel_reset", SubResource("AnimationNodeStateMachineTransition_ep0du"), "kneel_reset", "idle", SubResource("AnimationNodeStateMachineTransition_au7ji"), "idle", "sitdown", SubResource("AnimationNodeStateMachineTransition_5yxt2"), "sitdown", "situp_reset", SubResource("AnimationNodeStateMachineTransition_mur8r"), "situp_reset", "idle", SubResource("AnimationNodeStateMachineTransition_nesm3"), "idle", "wlk", SubResource("AnimationNodeStateMachineTransition_lbbxu"), "wlk", "idle", SubResource("AnimationNodeStateMachineTransition_l2nl3")]
+graph_offset = Vector2(210, -9)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_nfmgv"]
 size = Vector3(5.93445, 56.9483, 28.647)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_8xjw3"]
 size = Vector3(188.785, 1, 175.369)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_dbnrd"]
+size = Vector3(1.71875, 9.42157, 2.06665)
 
 [node name="AGP" type="Node3D"]
 script = ExtResource("1_p7e6j")
@@ -53,21 +98,36 @@ script = ExtResource("1_3ifwr")
 [node name="model" parent="Energy" instance=ExtResource("2_dp0oa")]
 
 [node name="Skeleton3D" parent="Energy/model/root" index="0"]
+bones/1/position = Vector3(9.15287e-08, 10.2986, -0.523483)
 bones/1/rotation = Quaternion(-3.7749e-08, -3.6637e-06, 2.91846e-13, 1)
 bones/2/rotation = Quaternion(0.568302, 0.0243455, 0.822111, 0.0239536)
+bones/2/scale = Vector3(1, 1, 1)
 bones/3/rotation = Quaternion(5.0653e-08, -3.76957e-08, 0.0521553, 0.998639)
+bones/3/scale = Vector3(1, 1, 1)
 bones/4/rotation = Quaternion(0.294261, 0.55804, -0.237329, 0.7387)
 bones/4/scale = Vector3(1.00002, 1, 1)
 bones/5/rotation = Quaternion(2.03536e-08, 0.970511, 0.241056, 5.04399e-07)
+bones/5/scale = Vector3(1, 1, 1)
+bones/6/position = Vector3(-1.78814e-07, 2.09371, 1.86265e-08)
 bones/6/rotation = Quaternion(2.93367e-08, 2.28401e-06, 7.68344e-09, 1)
 bones/7/rotation = Quaternion(1.39698e-08, -5.60831e-08, 1.29221e-08, 1)
 bones/8/rotation = Quaternion(-0.568296, 0.0243456, 0.822115, -0.0239541)
+bones/8/scale = Vector3(1, 1, 1.00001)
 bones/9/rotation = Quaternion(-1.30046e-08, -1.79191e-08, -0.0521561, 0.998639)
 bones/10/rotation = Quaternion(0.294261, -0.55804, 0.237329, 0.7387)
 bones/10/scale = Vector3(1.00002, 1, 1)
 bones/11/rotation = Quaternion(3.33791e-08, 0.970511, 0.241056, -4.12494e-07)
+bones/11/scale = Vector3(1, 1, 1)
 bones/12/rotation = Quaternion(1.55997e-08, -2.12758e-06, 3.49243e-09, 1)
 bones/13/rotation = Quaternion(1.76951e-08, 2.80139e-07, 8.49832e-09, 1)
+bones/14/position = Vector3(-1.20575e-06, 1.60595, -0.168535)
+bones/14/rotation = Quaternion(0.0127662, -0.00329745, -4.2191e-05, 0.999913)
+bones/15/rotation = Quaternion(-0.0430689, 0.00329835, 0.000142179, 0.999067)
+bones/15/scale = Vector3(1, 1, 1)
+bones/16/rotation = Quaternion(0.0265359, -1.19755e-07, 3.14771e-09, 0.999648)
+bones/17/rotation = Quaternion(0.0639068, 0.00671237, 0.000429854, 0.997933)
+bones/17/scale = Vector3(1, 1, 1)
+bones/18/scale = Vector3(1, 1, 1)
 bones/20/rotation = Quaternion(-0.469733, -0.470091, 0.182218, 0.724681)
 bones/21/rotation = Quaternion(2.08949e-07, -3.48018e-08, 0.418648, 0.908148)
 bones/22/rotation = Quaternion(0.143328, -0.362872, -0.21014, 0.89645)
@@ -77,6 +137,7 @@ bones/26/rotation = Quaternion(-0.548224, 0.377624, -0.309774, 0.678889)
 bones/27/rotation = Quaternion(4.44297e-09, -8.26371e-08, -0.0020513, 0.999998)
 bones/28/rotation = Quaternion(0.0430696, -0.469316, -0.0432502, 0.880918)
 bones/29/rotation = Quaternion(2.00729e-08, -0.469258, 5.21861e-10, 0.883061)
+bones/29/scale = Vector3(1, 1, 1)
 bones/30/rotation = Quaternion(-6.85362e-08, -0.205447, -3.20622e-07, 0.978668)
 
 [node name="AnimationPlayer" parent="Energy/model" index="1"]
@@ -92,6 +153,9 @@ tree_root = SubResource("AnimationNodeStateMachine_jrldy")
 anim_player = NodePath("../model/AnimationPlayer")
 parameters/conditions/idle = false
 parameters/conditions/is_walking = false
+parameters/conditions/kneel_on = false
+parameters/conditions/reset = false
+parameters/conditions/sit_on = false
 
 [node name="UI" type="CanvasLayer" parent="."]
 script = ExtResource("4_qs4b8")
@@ -113,7 +177,7 @@ offset_bottom = 623.0
 transform = Transform3D(0.291353, -0.169155, -0.941541, 0, -0.984242, 0.176827, -0.956616, -0.0515192, -0.286762, -15.5914, 44.6567, 4.86697)
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(-0.999983, -0.00577298, -0.000215621, 4.65661e-10, -0.0373241, 0.999303, -0.005777, 0.999287, 0.0373235, 2.6333, 169.484, -24.7301)
+transform = Transform3D(-0.999983, -0.00577298, -0.000215621, 4.65661e-10, -0.0373241, 0.999303, -0.005777, 0.999287, 0.0373235, 11.1005, 89.5036, -14.428)
 
 [node name="Beacon" type="RigidBody3D" parent="."]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 35.8469, 34.8193, 22.8995)
@@ -156,5 +220,25 @@ shape = SubResource("BoxShape3D_8xjw3")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="Floor"]
 transform = Transform3D(188.578, 0, -1.46839e-20, 0, 1, 0, -1.57498e-20, 0, 175.816, 0, 0, 0)
+
+[node name="Chair1" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.67771, 0)
+
+[node name="chair" parent="Chair1" instance=ExtResource("5_sqqo0")]
+transform = Transform3D(3.38843, 0, -4.36693, 0, 5.52734, 0, 4.36693, 0, 3.38843, -44.0559, 7.41193, 44.5764)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Chair1"]
+transform = Transform3D(4.8624, 0, -6.26653, 0, 7.93173, 0, 6.26653, 0, 4.8624, -47.5739, 30.6519, 44.1663)
+shape = SubResource("BoxShape3D_dbnrd")
+
+[node name="Chair2" type="RigidBody3D" parent="."]
+transform = Transform3D(-0.787527, 0, -0.61628, 0, 1, 0, 0.61628, 0, -0.787527, 11.516, -4.18831, 4.19905)
+
+[node name="chair" parent="Chair2" instance=ExtResource("5_sqqo0")]
+transform = Transform3D(4.8624, 0, -6.26653, 0, 7.93173, 0, 6.26653, 0, 4.8624, -44.8272, 9.82955, 46.2851)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Chair2"]
+transform = Transform3D(4.8624, 0, -6.26653, 0, 7.93173, 0, 6.26653, 0, 4.8624, -47.5739, 30.6519, 44.1663)
+shape = SubResource("BoxShape3D_dbnrd")
 
 [editable path="Energy/model"]

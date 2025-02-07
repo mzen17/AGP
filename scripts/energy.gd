@@ -8,14 +8,19 @@ func _ready() -> void:
 # Variables
 var move_speed = 10.0         # Movement speed
 var turn_speed = 2.0         # Turn speed (degrees per frame)
-var closeup = 10
+var closeup =  3	# this specifies a threshold of how close model can be
 var move_towards = Vector3.ZERO
+
+# finish is a signal to process what happens after approach
+var finish = "parameters/conditions/idle"
 
 @onready var _spring_arm = $SpringArm3D
 @onready var _model = $EnergyChan
 @onready var animtree = $AnimationTree
 
 func get_target_loc(radius: float, step_count: int, target: String):
+	# utilizes "fractional" ray outcast to detect target.
+	# will probably be replaced with a collider later
 	var hits = []
 	var center = self.global_transform.origin
 	print(self.global_transform.origin.y)
@@ -42,15 +47,27 @@ func get_target_loc(radius: float, step_count: int, target: String):
 	
 	return hits
 
-
 func exec(command: String, target: String):
+	reset()
 	print("Command: " + command)
 	print("Target: " + target)
 	
-	var targets = get_target_loc(120, 32, target)
-	if targets:
-		move_towards = targets[1]
-	print(targets)
+	if command == "walkto":
+		var targets = get_target_loc(120, 32, target)
+		if targets:
+			move_towards = targets[1]
+		finish = "parameters/conditions/idle"
+		
+	if command == "siton":
+		var targets = get_target_loc(120, 32, target)
+		if targets:
+			move_towards = targets[1]
+		finish = "parameters/conditions/sit_on"
+	
+	if command == "kneel":
+		print("KNEELING!")
+		move_towards = self.global_transform.origin
+		finish = "parameters/conditions/kneel_on"
 
 func get_direction_to(target_position: Vector3) -> Vector3:
 	var current_position = self.global_transform.origin
@@ -63,6 +80,8 @@ func get_direction_to(target_position: Vector3) -> Vector3:
 	return direction_vector
 
 func get_xz_distance(vec1: Vector3) -> float:
+	# this function gets the distance between self -> input
+	# only using the x and y coordinates.
 	var vec2 = self.global_transform.origin
 	var vec1_xz = Vector2(vec1.x, vec1.z)
 	var vec2_xz = Vector2(vec2.x, vec2.z)
@@ -80,15 +99,25 @@ func _physics_process(delta):
 	velocity.z = direction.z * move_speed
 	
 	if direction.length() > 0:
+		# if target enable walk to it
 		var target_y_rotation = atan2(direction.x, direction.z)  # Set Y rotation to face the movement direction
 		rotation.y = lerp_angle(rotation.y, target_y_rotation, 15 * delta)
 	move_and_slide()
 
+func reset():
+	# reset all actions
+	animtree["parameters/conditions/idle"] = true
+	animtree["parameters/conditions/reset"] = true
+	animtree["parameters/conditions/sit_on"] = false
+	animtree["parameters/conditions/kneel_on"] = false
+
 
 func update_animParams():
 	if (velocity == Vector3.ZERO):
+		reset()
 		animtree["parameters/conditions/is_walking"] = false
-		animtree["parameters/conditions/idle"] = true
+		animtree[finish] = true
+		animtree["parameters/conditions/reset"] = false
 	else:
 		animtree["parameters/conditions/is_walking"] = true
 		animtree["parameters/conditions/idle"] = false
